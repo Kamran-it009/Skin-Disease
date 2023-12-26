@@ -27,7 +27,7 @@ if selected == 'Home':
         image = Image.open(io.BytesIO(image_bytes))
         image_array = np.array(image.convert('RGB'))
         image_array = image_array * 255.0
-        image_array = np.resize(image_array, (512, 512, 3))
+        image_array = np.resize(image_array, (224, 224, 3))
         label = predictor(image_array, 'keras_model.h5')
         st.write('Image uploaded successfully..')
 

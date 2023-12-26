@@ -3,3 +3,4 @@ streamlit~=1.29.0
 pillow~=10.1.0
 matplotlib~=3.8.2
 tensorflow~=2.15.0
+streamlit_option_menu

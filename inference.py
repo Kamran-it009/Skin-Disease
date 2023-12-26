@@ -1,42 +1,28 @@
 from tensorflow.keras.models import load_model
-import matplotlib.pyplot as plt
 import numpy as np
-import os
+import cv2
 
-def predictor(img_array, model):
-    # Extract the label from the image path
-    # actual_label = os.path.basename(os.path.dirname(image_path))
 
-    # Load the test image
-    # img = image.load_img(image_path, target_size=(224, 224))
-    # img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
-
+def predict(img_array):
+    # Disable scientific notation for clarity
+    np.set_printoptions(suppress=True)
+    resized_image = cv2.resize(img_array, (224, 224))
     # Load the model
-    loaded_model = load_model(model)
-    print(img_array.shape)
+    model = load_model("keras_model.h5", compile=False)
+    # Load the labels
+    class_names = open("labels.txt", "r").readlines()
+    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
+    # Normalize the image
+    normalized_image_array = (resized_image.astype(np.float32) / 127.5) - 1
 
-    # Predict the label for the image
-    prediction = loaded_model.predict(img_array)
-    predicted_id = np.argmax(prediction)
+    # Load the image into the array
+    data[0] = normalized_image_array
 
-    # labels
+    # Predicts the model
+    prediction = model.predict(data)
+    index = np.argmax(prediction)
+    class_name = class_names[index]
+    confidence_score = prediction[0][index]
 
-    labels = ['Actinic keratosis', 'Atopic Dermatitis', 'Benign keratosis', 'Dermatofibroma',
-              'Eczema', 'Melanocytic nevus', 'Melanoma', 'Squamous cell carcinoma', 'Tinea Ringworm Candidiasis',
-              'Vascular lesion']
-    # Decode labels
-    class_labels = labels
-    decoded_predicted_label = class_labels[predicted_id]
-    return decoded_predicted_label
-
-    # Display the test image along with true label and predicted label
-    # plt.imshow(img)
-    # plt.axis('off')
-    # plt.title(f"True Label: {actual_label}, Predicted Label: {decoded_predicted_label}")
-    # plt.show()
-
-# model_path = "vgg16_model.h5"
-# test_image_path = "Skin_Dataset/val/Atopic Dermatitis/1_14.jpg"
-# print(predictor(image_array, model_path))
+    # Print prediction and confidence score
+    return class_name[2:]

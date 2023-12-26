@@ -2,7 +2,7 @@ import io
 import numpy as np
 from PIL import Image
 import streamlit as st
-from inference import predictor
+from inference import predict
 from streamlit_option_menu import option_menu
 
 st.set_page_config(
@@ -25,10 +25,10 @@ if selected == 'Home':
         st.image(uploaded_file, width=250)
         image_bytes = uploaded_file.read()
         image = Image.open(io.BytesIO(image_bytes))
-        image_array = np.array(image.convert('RGB'))
-        image_array = image_array * 255.0
-        image_array = np.resize(image_array, (224, 224, 3))
-        label = predictor(image_array, 'keras_model.h5')
+        image_array = np.array(image)
+        # image_array = image_array * 255.0
+        # image_array = np.resize(image_array, (224, 224, 3))
+        label = predict(image_array)
         st.write('Image uploaded successfully..')
 
         # Create a centered button

@@ -1,0 +1,10 @@
+0 Actinic keratosis
+1 Atopic Dermatitis
+2 Benign keratosis
+3 Dermatofibroma
+4 Eczema
+5 Melanocytic nevus
+6 Melanoma
+7 Squamous cell carcinoma
+8 Tinea Ringworm Candidiasis
+9 Vascular lesion

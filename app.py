@@ -27,7 +27,7 @@ if selected == 'Home':
         image = Image.open(io.BytesIO(image_bytes))
         image_array = np.array(image)
         # image_array = image_array * 255.0
-        # image_array = np.resize(image_array, (224, 224, 3))
+        # image_array = np.resize(image_array, (224, 224))
         label = predict(image_array)
         st.write('Image uploaded successfully..')
 
